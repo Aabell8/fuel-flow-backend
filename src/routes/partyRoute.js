@@ -13,7 +13,7 @@ router.post("/", function(req, res) {
     if (err) {
       res.status(500).json(err);
     } else {
-      res.json(party);
+      res.json({ party });
     }
   });
 });
@@ -30,25 +30,27 @@ router.get("/:id", async function(req, res) {
 
 // Add person to party
 router.put("/:id/people", async function(req, res) {
-  const id = Math.random()
-    .toString(36)
-    .substr(2, 4)
-    .toUpperCase();
+  console.log(req.params.id);
   const party = await Party.findById(req.params.id).exec();
-  party.people.push(
-    new Person({
-      _id: id,
-      name: req.body.name,
-      drinks: 0
-    })
-  );
-  party.save(function(err, p) {
-    if (err) {
-      res.status(500).json(p);
-    } else {
-      res.json(p);
-    }
-  });
+  console.log(party);
+  if (party) {
+    party.people.push(
+      new Person({
+        _id: req.body.id,
+        name: req.body.name,
+        drinks: 0
+      })
+    );
+    party.save(function(err, party) {
+      if (err) {
+        res.status(500).json({ party });
+      } else {
+        res.json({ party });
+      }
+    });
+  } else {
+    res.status(500).json({ error: "No party exists with this id" });
+  }
 });
 
 module.exports = router;
