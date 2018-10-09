@@ -5,6 +5,6 @@ describe('App', function() {
   it('has the default page', function(done) {
     request(app)
       .get('/')
-      .expect(/imgay/, done);
+      .expect(/test/, done);
   });
 }); 

@@ -7,8 +7,7 @@ const indexRouter = require("./routes/index");
 const peopleRouter = require("./routes/peopleRoute");
 const partyRouter = require("./routes/partyRoute");
 
-const { Party, Person } = require("./models");
-// const Person = require("./models/person");
+// const { Party, Person } = require("./models");
 
 const app = express();
 

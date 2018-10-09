@@ -5,7 +5,7 @@ const { Party, Person } = require("../models");
 
 /* GET home page. */
 router.get("/", function(req, res, next) {
-  res.send("Imgay");
+  res.send("test this");
 });
 
 module.exports = router;
