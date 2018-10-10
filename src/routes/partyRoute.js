@@ -30,9 +30,7 @@ router.get("/:id", async function(req, res) {
 
 // Add person to party
 router.put("/:id/people", async function(req, res) {
-  console.log(req.params.id);
   const party = await Party.findById(req.params.id).exec();
-  console.log(party);
   if (party) {
     party.people.push(
       new Person({
@@ -41,6 +39,53 @@ router.put("/:id/people", async function(req, res) {
         drinks: 0
       })
     );
+    party.save(function(err, party) {
+      if (err) {
+        res.status(500).json(party);
+      } else {
+        res.json(party);
+      }
+    });
+  } else {
+    res.status(500).json({ error: "No party exists with this id" });
+  }
+});
+
+router.put("/:id/people/:name", async function(req, res) {
+  const party = await Party.findById(req.params.id).exec();
+  const name = req.params.name;
+  if (party) {
+    const { people } = party;
+    for (let i = 0; i < people.length; i++) {
+      if (people[i]._id === name) {
+        people[i].isRequesting = true;
+      }
+    }
+    party.save(function(err, party) {
+      if (err) {
+        res.status(500).json(party);
+      } else {
+        res.json(party);
+      }
+    });
+  } else {
+    res.status(500).json({ error: "No party exists with this id" });
+  }
+});
+
+router.put("/:id/people/:name/verify", async function(req, res) {
+  const party = await Party.findById(req.params.id).exec();
+  const name = req.params.name;
+  if (party) {
+    const { people } = party;
+    for (let i = 0; i < people.length; i++) {
+      if (people[i]._id === name) {
+        if (people[i].isRequesting) {
+          people[i].isRequesting = false;
+          people[i].drinks = people[i].drinks + 1;
+        }
+      }
+    }
     party.save(function(err, party) {
       if (err) {
         res.status(500).json(party);

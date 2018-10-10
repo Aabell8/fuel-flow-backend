@@ -5,7 +5,6 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 
 const indexRouter = require("./routes/index");
-const peopleRouter = require("./routes/peopleRoute");
 const partyRouter = require("./routes/partyRoute");
 
 // const { Party, Person } = require("./models");
@@ -25,7 +24,6 @@ mongoose.connect(
 );
 
 app.use("/", indexRouter);
-app.use("/people", peopleRouter);
 app.use("/parties", partyRouter);
 
 // catch 404 and forward to error handler

@@ -45,15 +45,42 @@ describe("/parties/", function() {
   it("POST a user to a party", function(done) {
     request(app)
       .put(`/parties/${partyId}/people`)
-      .send({ id: "testId", name: "testName" })
+      .send({ id: "testName", name: "testName" })
       .set("Accept", "application/json")
       .expect(200)
       .end(function(err, res) {
         if (err) return done(err);
         const { people } = res.body;
         assert.equal(people.length, 1);
-        assert.equal(people[0]._id, "testId");
+        assert.equal(people[0]._id, "testName");
         assert.equal(people[0].name, "testName");
+        done();
+      });
+  });
+
+  it("PUTS isRequesting status on requesting user", function(done) {
+    request(app)
+      .put(`/parties/${partyId}/people/testName`)
+      .set("Accept", "application/json")
+      .expect(200)
+      .end(function(err, res) {
+        if (err) return done(err);
+        const { people } = res.body;
+        assert.equal(people[0].isRequesting, true);
+        done();
+      });
+  });
+
+  it("Verifies drink request and increments drink", function(done) {
+    request(app)
+      .put(`/parties/${partyId}/people/testName/verify`)
+      .set("Accept", "application/json")
+      .expect(200)
+      .end(function(err, res) {
+        if (err) return done(err);
+        const { people } = res.body;
+        assert.equal(people[0].isRequesting, false);
+        assert.equal(people[0].drinks, 1);
         done();
       });
   });
