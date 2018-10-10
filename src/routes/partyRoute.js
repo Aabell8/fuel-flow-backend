@@ -13,7 +13,7 @@ router.post("/", function(req, res) {
     if (err) {
       res.status(500).json(err);
     } else {
-      res.json({ party });
+      res.json(party);
     }
   });
 });
@@ -22,9 +22,9 @@ router.post("/", function(req, res) {
 router.get("/:id", async function(req, res) {
   const party = await Party.findById(req.params.id).exec();
   if (party) {
-    res.json({ party });
+    res.json(party);
   } else {
-    res.status(204).json({ party });
+    res.status(204).json(party);
   }
 });
 
@@ -43,9 +43,9 @@ router.put("/:id/people", async function(req, res) {
     );
     party.save(function(err, party) {
       if (err) {
-        res.status(500).json({ party });
+        res.status(500).json(party);
       } else {
-        res.json({ party });
+        res.json(party);
       }
     });
   } else {

@@ -20,9 +20,9 @@ describe("/parties/", function() {
       .expect(200)
       .end(function(err, res) {
         if (err) return done(err);
-        const { party } = res.body;
-        if (party._id) {
-          partyId = party._id;
+        const { body } = res;
+        if (body._id) {
+          partyId = body._id;
         } else {
           return done("No party id sent back");
         }
@@ -37,7 +37,7 @@ describe("/parties/", function() {
       .expect(200)
       .end(function(err, result) {
         if (err) return done(err);
-        assert.equal(result.body.party._id, partyId);
+        assert.equal(result.body._id, partyId);
         done();
       });
   });
@@ -50,8 +50,7 @@ describe("/parties/", function() {
       .expect(200)
       .end(function(err, res) {
         if (err) return done(err);
-        // console.log(res.body.party.people);
-        const { people } = res.body.party.people;
+        const { people } = res.body;
         assert.equal(people.length, 1);
         assert.equal(people[0]._id, "testId");
         assert.equal(people[0].name, "testName");
