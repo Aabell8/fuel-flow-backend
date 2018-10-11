@@ -5,6 +5,7 @@ const PersonSchema = new Schema({
   _id: String,
   name: String,
   isRequesting: Boolean,
+  verified: [String],
   drinks: Number
 });
 

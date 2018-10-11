@@ -36,6 +36,7 @@ router.put("/:id/people", async function(req, res) {
       new Person({
         _id: req.body.id,
         name: req.body.name,
+        verified: [],
         drinks: 0
       })
     );
@@ -73,16 +74,23 @@ router.put("/:id/people/:name", async function(req, res) {
   }
 });
 
-router.put("/:id/people/:name/verify", async function(req, res) {
+router.put("/:id/people/:name/verify/:verifier", async function(req, res) {
   const party = await Party.findById(req.params.id).exec();
   const name = req.params.name;
+  const verifier = req.params.verifier;
   if (party) {
     const { people } = party;
     for (let i = 0; i < people.length; i++) {
       if (people[i]._id === name) {
         if (people[i].isRequesting) {
-          people[i].isRequesting = false;
-          people[i].drinks = people[i].drinks + 1;
+          if (people[i].verified.indexOf(verifier) == -1) {
+            people[i].verified.push(verifier);
+          }
+          if (people[i].verified.length >= people.length - 1) {
+            people[i].isRequesting = false;
+            people[i].drinks = people[i].drinks + 1;
+            people[i].verified = [];
+          }
         }
       }
     }
