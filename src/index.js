@@ -18,8 +18,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 
+const mongoUrl = process.env.MONGOLAB_URI || "mongodb://localhost:27017/fuelFlow";
+
 mongoose.connect(
-  "mongodb://localhost:27017/fuelFlow",
+  mongoUrl,
   { useNewUrlParser: true }
 );
 
