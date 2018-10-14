@@ -18,8 +18,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 
+const mongoUrl = process.env.MONGOLAB_URI || "mongodb://localhost:27017/fuelFlow";
+
 mongoose.connect(
-  "mongodb://localhost:27017/fuelFlow",
+  mongoUrl,
   { useNewUrlParser: true }
 );
 
@@ -42,7 +44,7 @@ app.use(function(err, req, res, next) {
   res.send(err);
 });
 
-app.listen(port, () => {
+app.listen(process.env.PORT || port, () => {
   console.log(`listening on port ${port}`);
 });
 
